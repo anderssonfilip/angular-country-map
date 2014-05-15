@@ -1,0 +1,56 @@
+<div class="wrap" ng-controller="Search">
+	<div class="left_col">
+		Search: <input ng-model="query">
+
+		<ul>
+			<li ng-repeat="country in countries | filter:query">
+				{{country.name}} ({{country.code}})
+			</li>
+		</ul>
+	</div>
+	<div class="right_col">
+		<div id="map" style="max-width:1000px"></div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+
+	$(document).ready(function() {
+
+		$.getJSON('/app/countries.json', function (data) {
+
+
+        // Initiate the chart
+        $('#map').highcharts('Map', {
+
+        	title : {
+        		text : 'World Countries'
+        	},
+
+        	mapNavigation: {
+        		enabled: true,
+        		buttonOptions: {
+        			verticalAlign: 'bottom'
+        		}
+        	},
+
+        	series : [{
+        		data : data,
+        		mapData: Highcharts.maps.world,
+        		joinBy: 'code',
+        		name: 'countries',
+        		states: {
+        			hover: {
+        				color: '#BADA55'
+        			}
+        		},
+        		tooltip: {
+        			valueSuffix: ''
+        		}
+        	}]
+        });
+    });
+	});
+</script>
+
